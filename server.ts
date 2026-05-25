@@ -261,7 +261,13 @@ async function startServer() {
               generationConfig: {
                 temperature: typeof temperature === 'number' ? temperature : 0.7,
                 maxOutputTokens: 65536,
-              }
+              },
+              safetySettings: [
+                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" }
+              ]
             };
             if (schema) {
               reqBody.generationConfig.responseMimeType = "application/json";
@@ -452,7 +458,13 @@ async function startServer() {
 
           let config: any = {
             temperature: typeof temperature === 'number' ? temperature : 0.7,
-            systemInstruction: sysInstruction
+            systemInstruction: sysInstruction,
+            safetySettings: [
+              { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+              { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+              { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+              { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" }
+            ]
           };
 
           if (isProModel) {
