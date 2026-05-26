@@ -129,6 +129,26 @@ Yêu cầu: Áp dụng tư duy Đa Tác Vụ (Multi-Agent). Quá trình họp ph
 6. SÁNG TẠO 5 HÀNH ĐỘNG GỢI Ý KẾ TIẾP: Chuyên Gia Tuế Nguyệt dẫn dắt Hội đồng cùng vạch ra 5 rẽ nhánh mới. Tuyệt đối không đề xuất các hành động đơn lẻ, vụn vặt. Yêu cầu mỗi lựa chọn phải là MỘT CHUỖI HÀNH ĐỘNG LỚN, PHỨC TẠP BAO GỒM NHIỀU BƯỚC/HÀNH ĐỘNG NHỎ LIÊN TIẾP thực hiện một chiến lược hoàn chỉnh. Định lượng mức tiêu tốn thời gian cho toàn bộ chuỗi hành động đó và có giải thích chi tiết diễn biến, hệ quả (details).`;
   }
 
+  let partsJson = "";
+  if (targetWordCount <= 500) {
+    partsJson = `  "part1_architect_environment": "Trường đoạn 1 (VD do Kiến Trúc Sư chấp bút cảnh quan): Đoạn viết miêu tả ÍT NHẤT 250-300 chữ... Nhớ dùng kí tự xuống dòng '\\n\\n' bên trong chuỗi string để chống Wall of Text.",
+  "part2_psychologist_inner": "Trường đoạn 2 (VD do Tâm Sinh Lý chấp bút nội tâm): Khoảng 200-250 chữ khép lại vòng đấu.",`;
+  } else if (targetWordCount >= 10000) {
+    partsJson = `  "part1_architect_environment": "Trường đoạn 1 (VD do Kiến Trúc Sư chấp bút cảnh quan): Đoạn viết miêu tả DÀI KHỦNG KHIẾP ÍT NHẤT 1000 chữ... Nhớ dùng kí tự xuống dòng '\\n\\n' bên trong chuỗi string.",
+  "part2_psychologist_inner": "Trường đoạn 2 (VD do Tâm Sinh Lý chấp bút nội tâm): Phân tích nội tâm giằng xé khoảng 1000 chữ...",
+  "part3_action_director": "Trường đoạn 3 (VD do Đạo diễn): Băm nhỏ hành động chi tiết 1000 chữ...",
+  "part4_world_building": "Trường đoạn 4 (VD do Chuyên Gia Bối Cảnh): Khai thác thế giới, kỹ năng khoảng 1000 chữ...",
+  "part5_dialogue": "Trường đoạn 5 (VD do Ngôn Ngữ Học): Đối thoại đan xen tâm lý 1000 chữ...",
+  "...": "TIẾP TỤC TẠO ÍT NHẤT 10-15 PART, MỖI PART KHOẢNG 800 - 1000 CHỮ để đánh thủng mốc 10000 CHỮ, luân phiên các ROLE, miễn tên Key bắt đầu bằng 'part_'.",
+  "part_n_your_custom_name": "Trường đoạn khép lại vòng đấu đại bạo tẩu.",`;
+  } else {
+    partsJson = `  "part1_architect_environment": "Trường đoạn 1 (VD do Kiến Trúc Sư chấp bút cảnh quan): Đoạn viết miêu tả ÍT NHẤT 400-500 chữ... Nhớ dùng kí tự xuống dòng '\\n\\n' bên trong chuỗi string để chống Wall of Text.",
+  "part2_psychologist_inner": "Trường đoạn 2 (VD do Tâm Sinh Lý chấp bút nội tâm): Lại một khoảng miêu tả sự giằng xé sâu sắc khoảng 400-500 chữ... Tiếp diễn căng thẳng.",
+  "part3_action_director": "Trường đoạn 3 (VD do Đạo diễn vi phân hành động): Từng sát na được băm nhỏ thành khung hình nghệ thuật...",
+  "...": "Tiếp tục tạo nhiều Part luân phiên các ROLE để mổ xẻ đa hình thái, miễn tên Key bắt đầu bằng 'part_'.",
+  "part_n_your_custom_name": "Trường đoạn cuối cùng của vòng đấu.",`;
+  }
+
   const rulesBlock = playerRules.trim() ? `
 ======================================================================
 [DIRECTIVE: ABSOLUTE PLAYER RULES - QUY TẮC TỐI THƯỢNG TỪ NGƯỜI CHƠI]
@@ -228,11 +248,7 @@ Ngôn ngữ sử dụng: Tiếng Việt 100%. Bản thân các trường cập n
     }
   ],
   "outline": "Tóm tắt ngắn gọn Dàn ý, ghi RÕ RÀNG Tên Part và Role nào của Hội đồng AI được chỉ định 'chấp bút' cho Part đó.",
-  "part1_architect_environment": "Trường đoạn 1 (VD do Kiến Trúc Sư chấp bút cảnh quan): Đoạn viết miêu tả ÍT NHẤT 400-500 chữ... Nhớ dùng kí tự xuống dòng '\\n\\n' bên trong chuỗi string để chống Wall of Text.",
-  "part2_psychologist_inner": "Trường đoạn 2 (VD do Tâm Sinh Lý chấp bút nội tâm): Lại một khoảng miêu tả sự giằng xé sâu sắc khoảng 400-500 chữ... Tiếp diễn căng thẳng.",
-  "part3_action_director": "Trường đoạn 3 (VD do Đạo diễn vi phân hành động): Từng sát na được băm nhỏ thành khung hình nghệ thuật...",
-  "...": "Tiếp tục tạo nhiều Part luân phiên các ROLE để mổ xẻ đa hình thái, miễn tên Key bắt đầu bằng 'part_'.",
-  "part_n_your_custom_name": "Trường đoạn cuối cùng của vòng đấu.",
+${partsJson}
   "suggestedActions": [
     { "action": "Tiêu đề Hành Động 1", "details": "Nêu chi tiết chuỗi 3-4 thao tác vi mô...", "timeCost": "30 phút / 2 ngày..." },
     { "action": "Tiêu đề Hành Động 2", "details": "Nêu chi tiết chuỗi thao tác vi mô...", "timeCost": "thời gian tiêu tốn..." },

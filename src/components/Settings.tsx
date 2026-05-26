@@ -595,10 +595,12 @@ export default function Settings() {
                         onChange={(e) => setTargetWordCount(Number(e.target.value))}
                         className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 min-w-[140px] [&>option]:bg-black [&>option]:text-white"
                       >
+                        <option value={500}>500 chữ</option>
                         <option value={1000}>1000 chữ</option>
                         <option value={2000}>2000 chữ</option>
                         <option value={3000}>3000 chữ</option>
                         <option value={4000}>4000 chữ</option>
+                        <option value={10000}>10000 chữ</option>
                       </select>
                     </div>
 
