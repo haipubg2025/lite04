@@ -53,12 +53,16 @@ const formatCodexData = (obj: any, excludeKeys: string[] = []) => {
   const lines = [];
   for (const [key, value] of Object.entries(obj)) {
     if (excludeKeys.includes(key)) continue;
-    if (value && typeof value === "string" && value.trim() !== "") {
+    if (value) {
       const formattedKey = key
         .replace(/([A-Z])/g, " $1")
         .trim()
         .toUpperCase();
-      lines.push(`- ${formattedKey}: ${value.trim()}`);
+      if (typeof value === "string" && value.trim() !== "") {
+        lines.push(`- ${formattedKey}: ${value.trim()}`);
+      } else if (typeof value === "object") {
+        lines.push(`- ${formattedKey}: ${JSON.stringify(value)}`);
+      }
     }
   }
   return lines.length > 0 ? lines.join("\n") : "Không có thông tin.";
@@ -70,13 +74,17 @@ const formatNPCsCodex = (npcs: any[]) => {
     .map((npc, idx) => {
       const lines = [`NPC ${idx + 1}:`];
       for (const [key, value] of Object.entries(npc)) {
-        if (["id", "avatar"].includes(key)) continue;
-        if (value && typeof value === "string" && value.trim() !== "") {
+        if (["id", "avatar", "isPinned"].includes(key)) continue;
+        if (value) {
           const formattedKey = key
             .replace(/([A-Z])/g, " $1")
             .trim()
             .toUpperCase();
-          lines.push(`  + ${formattedKey}: ${value.trim()}`);
+          if (typeof value === "string" && value.trim() !== "") {
+            lines.push(`  + ${formattedKey}: ${value.trim()}`);
+          } else if (typeof value === "object") {
+            lines.push(`  + ${formattedKey}: ${JSON.stringify(value)}`);
+          }
         }
       }
       return lines.join("\n");

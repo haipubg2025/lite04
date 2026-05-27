@@ -136,7 +136,8 @@ function StatusCard({
   index, 
   onPinToggle,
   onUpdateStatus,
-  onSelectDetail
+  onSelectDetail,
+  onDeleteCharacter
 }: { 
   character: any; 
   type: 'mc' | 'npc'; 
@@ -144,6 +145,7 @@ function StatusCard({
   onPinToggle?: () => void;
   onUpdateStatus: (type: 'mc' | 'npc', idx: number, newData: any) => void;
   onSelectDetail: (item: StatusItem, sectionLabel: string) => void;
+  onDeleteCharacter?: () => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -270,6 +272,19 @@ function StatusCard({
             >
               {isCollapsed ? <ChevronDown size={15} strokeWidth={2.5} /> : <ChevronUp size={15} strokeWidth={2.5} />}
             </button>
+            {onDeleteCharacter && (
+              <button
+                onClick={() => {
+                  if (confirm(`Bạn có chắc chắn muốn xóa nhân vật ${character.fullName || character.name} khỏi bảng trạng thái không?`)) {
+                    onDeleteCharacter();
+                  }
+                }}
+                className="p-2 rounded-xl transition-all border shrink-0 flex items-center justify-center active:scale-95 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border-rose-500/20"
+                title="Xóa nhân vật"
+              >
+                <Trash2 size={15} strokeWidth={2} />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -480,6 +495,15 @@ export default function StatusModal({ onClose }: StatusModalProps) {
     setGameData(updatedGameData);
   };
 
+  const handleDeleteCharacter = (npcIndex: number) => {
+    const updatedGameData = JSON.parse(JSON.stringify(gameData));
+    if (updatedGameData.npcs) {
+      updatedGameData.npcs.splice(npcIndex, 1);
+    }
+    setGameData(updatedGameData);
+    toast.success('Đã xóa nhân vật khỏi bảng');
+  };
+
   const renderedList: { type: 'mc'|'npc'; char: any; index: number; isPinned: boolean }[] = [];
   
   if (gameData.mcData) {
@@ -534,6 +558,7 @@ export default function StatusModal({ onClose }: StatusModalProps) {
                   onPinToggle={item.type === 'npc' ? () => togglePin(item.index) : undefined}
                   onUpdateStatus={handleUpdateStatus}
                   onSelectDetail={(item, label) => setSelectedDetail({ item, sectionLabel: label })}
+                  onDeleteCharacter={item.type === 'npc' ? () => handleDeleteCharacter(item.index) : undefined}
                 />
               </motion.div>
             ))}
